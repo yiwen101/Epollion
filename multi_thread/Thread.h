@@ -4,11 +4,13 @@
 #include <thread>
 #include <atomic>
 #include <string>
+#include <shared_ptr>
+
 class Thread {
 	public:
 		using ThreadFunc = std::function<void()>;
 		
-		explicit Thread(ThreadFunc, const std::string &name = "");
+		explicit Thread(ThreadFunc f, const std::string &name = "");
 		~Thread();
 		
 		void start();
@@ -18,6 +20,9 @@ class Thread {
 		pid_t tid() const {return _tid;}
 		static int numCreated() {return _numCreated;}
 	private:
+		bool _started = false;
+		bool _joined = false;
+		std::shared_ptr<std::thread> _thread;
 		std::string _name;
 		pid_t _tid;
 		ThreadFunc _f;
