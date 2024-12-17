@@ -4,7 +4,7 @@
 #include <thread>
 #include <atomic>
 #include <string>
-#include <shared_ptr>
+#include <memory>
 
 class Thread {
 	public:

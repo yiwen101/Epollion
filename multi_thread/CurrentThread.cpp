@@ -2,7 +2,7 @@
 #include <iostream>
 
 namespace CurrentThread {
-	extern thread_local int _tid;
+	thread_local int _tid = -1;
 	void recordTid() {
 		if (_tid < 0) {
 			_tid = static_cast<pid_t>(::syscall(SYS_gettid));

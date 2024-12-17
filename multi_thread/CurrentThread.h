@@ -3,7 +3,7 @@
 #include <sys/syscall.h>
 
 namespace CurrentThread {
-	thread_local int _tid = -1;
+	extern thread_local int _tid;
 	void recordTid();
 	inline int tid() {
 		if (_tid < 0) {
