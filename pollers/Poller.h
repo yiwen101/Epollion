@@ -8,7 +8,7 @@ class TimeStamp;
 class Poller {
 	public:
 		Poller(EventLoop* loop);
-//		~Poller();
+		~Poller();
 
 		virtual TimeStamp poll(int timeOutMS, std::vector<Channel*>* channels);
 		virtual void mustAddChannel(Channel* channel);
