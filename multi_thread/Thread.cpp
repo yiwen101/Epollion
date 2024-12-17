@@ -38,7 +38,7 @@ void Thread::join() {
 		_thread->join();
 	}
 }
-
+/* my smoke test
 #include<vector>
 #include<functional>
 #include<iostream>
@@ -69,6 +69,7 @@ int main() {
 	}
 }
 		
+*/
 			
 	
 
