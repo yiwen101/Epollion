@@ -1,3 +1,4 @@
+#pragma once
 #include <vector>
 #include <unordered_map>
 
@@ -22,4 +23,4 @@ class Poller {
 		EventLoop* ownerLoop;
 };
 
-
+:
