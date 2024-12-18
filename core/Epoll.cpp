@@ -49,21 +49,52 @@ void updateChannel(Channel* chan) {
 			_channels[fd] = chan;
 		}
 		chan->setStatus(kAdded);
-		update(EPOLL_CTL_ADD, chan);
+		_update(EPOLL_CTL_ADD, chan);
 	} else {
 		int fd = chan->fd();
 		if(! chan->hasInterestedEvent) {
-			update(EPOLL_CTL_DEL, chan);
+			_update(EPOLL_CTL_DEL, chan);
 			chan->set_status(kDeleted);
 		} else {
-			update(EPOLL_CTL_MOD, chan);
+			_update(EPOLL_CTL_MOD, chan);
 		}
 	}
 }
 
+void Epoll::mustDeleteChannel(Channel* chan) {
+	int fd = chan->fd();
+	_channelMap.erase(fd);
+	int status = chan->status();
+	if(status == kAdded) {
+		_update(EPOLL_CTL_DEL, chan);
+	}
+	chan->setStatus(kNew);
+}
+
+void Epoll::_update(int operation, Channel* chan) {
+	epoll_event event;
+	bzero(&event, sizeof event);
+	
+	int fd = chan->fd();
+	event.events = chan->getInterestedEventMask();
+	event.data.fd = fd;
+	event.data.ptr = chan;
+	
+	if(::epoll_ctl(_fd, operation, fd, &event) != 0) {
+		//todo log error
+	}
+}
+
+void Epoll::_fillActiveChannels(int numEvents, Channels* activeChans) {
+	for(int i=0;i<numEvents;i++) {
+		epoll_event event = _events[i];
+		Channel* chan = static_cast<Channel*> (event.data.ptr);
+		activeChans.push_back(chan);
+		chan->setRevents(event.events);
+	}
+}
 
 bool Epoll::hasChannel(Channel* chan) {
 	auto pt = _channelMap.find(chan->fd());_
 	return pt != _channelMap.end() && pt->second == chan;
-}
-	
+}	

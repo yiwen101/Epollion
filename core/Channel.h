@@ -30,7 +30,9 @@ class Channel {
 		int fd() { return _fd;}
 		int status() {return _status;}
 		int setStatus(int status) {_status = status;}
-		bool hasInsterestedEvent(return _events != 0);
+		bool hasInsterestedEvent(return _events != 0)
+		int getInterestedEventMask(return _events;)
+		void setRevents(int revents) {_revents = revents;}
 	private:
 		int _status;
 		int _fd;
