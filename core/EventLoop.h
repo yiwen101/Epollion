@@ -19,7 +19,9 @@ class EventLoop {
 		void mustAddChannel(Channel *c);
 		void mustDeleteChannel(Channel *c);
 		bool hasChannel(Channel *c);
+	
 	private:
+		void _tryGotWakeup();
 		std::vector<Channel*> _channels;
 		std::unique_ptr<Epoll> _epoll;
 		std::vector<Task> _tasks;
