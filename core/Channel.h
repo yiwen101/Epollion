@@ -27,8 +27,13 @@ class Channel {
 		void disableWrite() {_disable(_writeEvent);}
 		void disableAll() { _events = _noneEvent; update();}
 
-
+		int fd() { return _fd;}
+		int status() {return _status;}
+		int setStatus(int status) {_status = status;}
+		bool hasInsterestedEvent(return _events != 0);
 	private:
+		int _status;
+		int _fd;
 		int _events;
 		int _revents;
 		ReadCallBack _onRead;

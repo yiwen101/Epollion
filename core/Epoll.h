@@ -16,9 +16,9 @@ class Epoll {
 		Epoll(EventLoop* loop);
 		~Epoll();
 
-		virtual TimeStamp poll(int timeOutMS, Channels* channels);
-		virtual void mustAddChannel(Channel* chan);
-		virtual void mustDeleteChannel(Channel* chan);
+		TimeStamp poll(int timeOutMS, Channels* channels);
+		void updateChannel(Channel* chan);
+		void mustDeleteChannel(Channel* chan);
 		bool hasChannel(Channel* chan);
 
 	protected:

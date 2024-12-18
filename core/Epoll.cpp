@@ -3,6 +3,9 @@
 #include "Epoll.h"
 #include "Channel.h"
 
+const int kNew = -1;
+const int kAdded = 1;
+const int kDeleted = 2;
 
 Epoll::Epoll(EventLoop *loop) {
 	_ownerLoop = loop;
@@ -38,8 +41,25 @@ TimeStamp Epoll::poll(int timeOutMs, Channels* channels) {
 	return now;
 }
 			
-
-
+void updateChannel(Channel* chan) {
+	int status = channel->status();
+	if(status == kNew || status == kDeleted) {
+		if (status == kNew) {
+			int fd = chan->fd();
+			_channels[fd] = chan;
+		}
+		chan->setStatus(kAdded);
+		update(EPOLL_CTL_ADD, chan);
+	} else {
+		int fd = chan->fd();
+		if(! chan->hasInterestedEvent) {
+			update(EPOLL_CTL_DEL, chan);
+			chan->set_status(kDeleted);
+		} else {
+			update(EPOLL_CTL_MOD, chan);
+		}
+	}
+}
 
 
 bool Epoll::hasChannel(Channel* chan) {
