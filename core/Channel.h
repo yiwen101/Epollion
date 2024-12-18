@@ -25,6 +25,7 @@ class Channel {
 		void enableWrite() {_enable(_writeEvent);}
 		void disableRead() {_disable(_readEvent);}
 		void disableWrite() {_disable(_writeEvent);}
+		void disableAll() { _events = _noneEvent; update();}
 
 
 	private:

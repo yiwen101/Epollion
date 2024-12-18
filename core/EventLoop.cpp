@@ -15,9 +15,12 @@ EventLoop::EventLoop() {
 		// fatal
 	}
 	_wakeupChannel = new Channel(this, _wakeupFd);
-	_wakeupChannel->onRead(std::bind(&EventLoop::_tryGotWakeup, this));
+	_wakeupChannel->onRead(std::bind(&EventLoop::_tryGotWokeup, this));
 	_wakeupChannel->enableRead();
 	
 }
+	
+EventLoop::~EventLoop() {
+	_wakeupChannel->disableAll();
 		
 
